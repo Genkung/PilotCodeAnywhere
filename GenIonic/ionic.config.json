@@ -1,0 +1,7 @@
+{
+  "name": "GenIonic",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}
