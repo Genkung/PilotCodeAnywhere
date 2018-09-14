@@ -2,26 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DAC;
+using DAC.Contract;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
-using MongoDB.Bson.Serialization.Attributes;
+using Models;
 
 namespace GenWebAPI.Controllers
 {
     [Route("api/[controller]/[action]")]
     public class StudentController : ControllerBase
     {
-        private readonly IMongoClient _client;
-        private readonly IMongoDatabase _database;
-        private readonly IMongoCollection<Student> Collection;
-        
+        IStudentDAC stdDac;
         public StudentController()
         {
-            _client = new MongoClient("mongodb://admin:lljick146@ds056559.mlab.com:56559/votemeifyoucan");
-            _database = _client.GetDatabase("votemeifyoucan");
-            Collection = _database.GetCollection<Student>("Student");
+            stdDac = new StudentDAC();
         }
 
+        public void SetMockDac(IStudentDAC stdDac)
+        {
+            this.stdDac = stdDac;
+        }
         
         [HttpPost]
         public Student AddStudent([FromBody]Student request)
@@ -30,27 +30,11 @@ namespace GenWebAPI.Controllers
         }
         
         [HttpGet]
-        public List<Student> GetStudent()
+        public IEnumerable<Student> ListStudent()
         {
-            var result = Collection.Find(x => true).ToList();
+            var result = stdDac.ListStudent();
             return result;
         }
-        
     }
-
-    public class Testpost
-    {
-        public string value1 { get; set; }
-        public string value2 { get; set; }
-    }
-  
-    public class Student
-    {
-      [BsonId]
-      public string _id {get; set;}
-      public string Name {get; set;}
-      public DateTime CreateDate {get; set;}
-    }
-
 }
    

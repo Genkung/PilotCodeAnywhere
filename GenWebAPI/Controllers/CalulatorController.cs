@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 using MongoDB.Bson.Serialization.Attributes;
+using Models;
 
 namespace GenWebAPI.Controllers
 {
